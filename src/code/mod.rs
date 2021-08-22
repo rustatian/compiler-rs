@@ -4,7 +4,7 @@ use crate::error;
 use crate::error::Error;
 
 lazy_static! {
-    static ref DEFINITIONS: HashMap<OpCode, Definition> = {
+    static ref DEFINITIONS: HashMap<OpCode, Definition<isize>> = {
         let mut m = HashMap::new();
         m.insert(
             OpCode::OpConstant,
@@ -25,13 +25,13 @@ enum OpCode {
 }
 
 #[derive(Clone, Eq, PartialEq, Hash)]
-struct Definition {
+struct Definition<T> {
     name: String,
-    operand_widths: Vec<isize>,
+    operand_widths: Vec<T>,
 }
 
-impl Definition {
-    fn new(name: String, operand_len: isize) -> Definition {
+impl Definition<isize> {
+    fn new(name: String, operand_len: isize) -> Definition<isize> {
         Definition {
             name,
             operand_widths: vec![operand_len],
@@ -39,7 +39,7 @@ impl Definition {
     }
 }
 
-fn lookup(op: OpCode) -> Result<&'static Definition, error::Error> {
+fn lookup(op: OpCode) -> Result<&'static Definition<isize>, error::Error> {
     match DEFINITIONS.get(&op) {
         None => Err(Error {
             code: 1,
