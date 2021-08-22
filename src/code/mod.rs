@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::ops::Shr;
 
 use crate::error;
 use crate::error::Error;
@@ -65,11 +64,12 @@ fn make(op: OpCode, operands: Vec<isize>) -> Vec<u8> {
     for (i, o) in operands.iter().enumerate() {
         let width = def.operand_widths[i];
         match width {
+            // u8
             1 => {}
-            // uint16
+            // u16
             // we need to convert into 2 bytes
             2 => {
-                instruction.push(o.shr(8) as u8);
+                instruction.push((*o >> 8) as u8);
                 instruction.push(*o as u8);
             }
             _ => {}
