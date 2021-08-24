@@ -49,6 +49,7 @@ fn lookup(op: OpCode) -> Result<&'static Definition<isize>, error::Error> {
     }
 }
 
+// according to the opcode split the operand into 1 or 2 8bit words
 fn make(op: OpCode, operands: Vec<isize>) -> Vec<u8> {
     let def = DEFINITIONS.get(&op).unwrap();
 
@@ -69,8 +70,8 @@ fn make(op: OpCode, operands: Vec<isize>) -> Vec<u8> {
             // u16
             // we need to convert into 2 bytes
             2 => {
-                instruction.push((*o >> 8) as u8);
-                instruction.push(*o as u8);
+                instruction.push((*o >> 8) as u8); // upper 8bits
+                instruction.push(*o as u8); // lower 8bits
             }
             _ => {}
         }
