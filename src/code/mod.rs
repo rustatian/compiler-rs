@@ -90,4 +90,10 @@ mod tests {
         let res = make(OpConstant, vec![65534]);
         assert_eq!(res, vec![0, 255, 254]);
     }
+
+    #[test]
+    fn test_make_2() {
+        let res = make(OpConstant, vec![65536]);
+        assert_eq!(res, vec![0, 0, 0]);
+    }
 }
